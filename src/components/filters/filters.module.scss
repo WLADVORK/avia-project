@@ -1,73 +1,73 @@
 @font-face {
-    font-family: 'Open Sans';
-    src: url(../../../public/fonts/OpenSans.ttf);
+  font-family: 'Open Sans';
+  src: url(../../../public/fonts/OpenSans.ttf);
 }
 
 .filters {
-    width: 232px;
-    height: 252px;
-    box-shadow: 0px 2px 8px 0px #0000001A;
-    background-color: #FFFFFF;
-    padding: 10px 0;
-    font-family: 'Open Sans';
-    color: #4A4A4A;
-    border-radius: 5px;
+  width: 232px;
+  height: 252px;
+  box-shadow: 0px 2px 8px 0px #0000001a;
+  background-color: #ffffff;
+  padding: 10px 0;
+  font-family: 'Open Sans';
+  color: #4a4a4a;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  &__heading {
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    padding: 10px 20px;
+  }
+
+  &__form {
     display: flex;
     flex-direction: column;
+  }
 
-    @media (max-width: 768px) {
-        width: 100%;
-    }
+  &__label {
+    font-size: 13px;
+    line-height: 20px;
+    display: flex;
+    gap: 0 10px;
+    padding: 10px 20px;
+  }
 
-    &__heading {
-        font-size: 12px;
-        line-height: 12px;
-        letter-spacing: 0.5px;
-        font-weight: 600;
-        padding: 10px 20px;
-    }
+  &__label:hover {
+    background-color: #f1fcff;
+  }
 
-    &__form {
-        display: flex;
-        flex-direction: column;
-    }
+  &__checkbox {
+    content: '';
+    display: flex;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #9abbce;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+  }
 
-    &__label {
-        font-size: 13px;
-        line-height: 20px;
-        display: flex;
-        gap: 0 10px;
-        padding: 10px 20px;
-    }
+  &__mark {
+    display: none;
+  }
 
-    &__label:hover {
-        background-color: #F1FCFF;
-    }
+  &__input {
+    display: none;
+  }
 
-    &__checkbox {
-        content: '';
-        display: flex;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #9ABBCE;
-        border-radius: 2px;
-        align-items: center;
-        justify-content: center;
-    }
+  &__input:checked + .filters__checkbox {
+    border-color: #2196f3;
+  }
 
-    &__mark {
-        display: none;
-    }
-
-    &__input {
-        display: none;
-    }
-
-    &__input:checked + .filters__checkbox {
-        border-color: #2196F3;
-    }
-
-    &__input:checked + .filters__checkbox > .filters__mark {
-        display: block;
-    }
+  &__input:checked + .filters__checkbox > .filters__mark {
+    display: block;
+  }
 }
