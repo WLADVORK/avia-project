@@ -1,13 +1,9 @@
 html {
-  box-sizing: border-box;
-  cursor: url('../../../public/images/cursor.svg'), pointer;
+    box-sizing: border-box;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-  cursor: inherit;
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 body {
