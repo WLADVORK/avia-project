@@ -1,12 +1,35 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable object-curly-newline */
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as actions from '../../actions'
+
 import styles from './ticket-list.module.scss'
 
-export default function TicketList() {
+function TicketList({ cheapest, fastest, optimal, CHEAPEST, FASTEST, OPTIMAL }) {
   return (
     <div className={styles.ticketList}>
       <div className={styles.ticketList__tabs}>
-        <div className={`${styles.ticketList__tab} ${styles['ticketList__tab--selected']}`}>САМЫЙ ДЕШЕВЫЙ</div>
-        <div className={styles.ticketList__tab}>САМЫЙ БЫСТРЫЙ</div>
-        <div className={styles.ticketList__tab}>ОПТИМАЛЬНЫЙ</div>
+        <div
+          className={`${styles.ticketList__tab} ${cheapest ? styles['ticketList__tab--selected'] : ''}`}
+          onClick={CHEAPEST}
+        >
+          САМЫЙ ДЕШЕВЫЙ
+        </div>
+        <div
+          className={`${styles.ticketList__tab} ${fastest ? styles['ticketList__tab--selected'] : ''}`}
+          onClick={FASTEST}
+        >
+          САМЫЙ БЫСТРЫЙ
+        </div>
+        <div
+          className={`${styles.ticketList__tab} ${optimal ? styles['ticketList__tab--selected'] : ''}`}
+          onClick={OPTIMAL}
+        >
+          ОПТИМАЛЬНЫЙ
+        </div>
       </div>
       <div className={styles.tickets}>
         <div className={styles.ticket}>
@@ -150,3 +173,19 @@ export default function TicketList() {
     </div>
   )
 }
+
+const mapStateToProps = ({ tabs }) => ({
+  cheapest: tabs.cheapest,
+  fastest: tabs.fastest,
+  optimal: tabs.optimal,
+})
+
+const mapDispatchToProps = (dispatch) => {
+  const { CHEAPEST, FASTEST, OPTIMAL } = bindActionCreators(actions, dispatch)
+  return {
+    CHEAPEST,
+    FASTEST,
+    OPTIMAL,
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TicketList)

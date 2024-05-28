@@ -69,5 +69,6 @@
 
   &__input:checked + .filters__checkbox > .filters__mark {
     display: block;
+    user-select: none;
   }
 }
