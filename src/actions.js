@@ -13,3 +13,11 @@ export const CHEAPEST = () => ({ type: 'CHEAPEST' })
 export const FASTEST = () => ({ type: 'FASTEST' })
 
 export const OPTIMAL = () => ({ type: 'OPTIMAL' })
+
+export const GET_TICKETS = (dispatch) => {
+  fetch('https://aviasales-test-api.kata.academy/search')
+    .then((response) => response.json())
+    .then((result) => fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${result.searchId}`))
+    .then((response) => response.json())
+    .then((result) => dispatch({ type: 'TICKETS', payload: result }))
+}
