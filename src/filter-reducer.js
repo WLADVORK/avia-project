@@ -1,17 +1,23 @@
 /* eslint-disable indent */
 const initialState = {
-  all: false,
-  noTransfer: false,
-  oneTransfer: false,
-  twoTransfers: false,
-  threeTransfers: false,
+  all: true,
+  noTransfer: true,
+  oneTransfer: true,
+  twoTransfers: true,
+  threeTransfers: true,
 }
 
 const filterReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ALL':
       if (state.all) {
-        return initialState
+        return {
+          all: false,
+          noTransfer: false,
+          oneTransfer: false,
+          twoTransfers: false,
+          threeTransfers: false,
+        }
       }
       return {
         all: true,

@@ -15,9 +15,32 @@ export const FASTEST = () => ({ type: 'FASTEST' })
 export const OPTIMAL = () => ({ type: 'OPTIMAL' })
 
 export const GET_TICKETS = (dispatch) => {
-  fetch('https://aviasales-test-api.kata.academy/search')
-    .then((response) => response.json())
+  const first = fetch('https://aviasales-test-api.kata.academy/search').then((response) => response.json())
+  function getAgain() {
+    first
+      .then((result) => fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${result.searchId}`))
+      .then((response) => response.json())
+      .then((result) => {
+        dispatch({ type: 'TICKETS', payload: result })
+        if (result.stop === false) {
+          getAgain()
+        }
+      })
+      .catch(() => {
+        getAgain()
+      })
+  }
+
+  first
     .then((result) => fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${result.searchId}`))
     .then((response) => response.json())
-    .then((result) => dispatch({ type: 'TICKETS', payload: result }))
+    .then((result) => {
+      dispatch({ type: 'TICKETS', payload: result })
+      if (result.stop === false) {
+        getAgain()
+      }
+    })
+    .catch(() => {
+      getAgain()
+    })
 }

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable comma-dangle */
@@ -13,7 +14,7 @@ import * as actions from '../../actions'
 
 import styles from './ticket-list.module.scss'
 
-function TicketList({ cheapest, fastest, optimal, CHEAPEST, FASTEST, OPTIMAL, tickets }) {
+function TicketList({ cheapest, fastest, optimal, CHEAPEST, FASTEST, OPTIMAL, tickets, done }) {
   return (
     <div className={styles.ticketList}>
       <div className={styles.ticketList__tabs}>
@@ -36,14 +37,39 @@ function TicketList({ cheapest, fastest, optimal, CHEAPEST, FASTEST, OPTIMAL, ti
           ОПТИМАЛЬНЫЙ
         </div>
       </div>
-      <div className={styles.tickets}>{tickets.length !== 0 ? tickets.slice(0, 5) : <Spin size="large" />}</div>
-      <div className={styles.ticketList__showMore}>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!</div>
+      {tickets.length === 0 ? (
+        <div className={styles.ticketList__noData}>Рейсов, подходящих под заданные фильтры, не найдено </div>
+      ) : (
+        <>
+          <div className={styles.tickets}>{tickets.length !== 0 ? tickets.slice(0, 5) : <Spin size="large" />}</div>
+          {done ? null : <Spin />}
+          <div className={styles.ticketList__showMore}>{`ПОКАЗАТЬ ЕЩЕ ${tickets.length} БИЛЕТОВ!`}</div>
+        </>
+      )}
     </div>
   )
 }
 
-const mapStateToProps = ({ tabs, server }) => {
+const mapStateToProps = ({ tabs, server, filters }) => {
   let tickets = server.tickets.slice()
+  if (!filters.all) {
+    tickets = tickets.filter((item) => {
+      if (!filters.noTransfer && (item.segments[0].stops.length === 0 || item.segments[1].stops.length === 0)) {
+        return false
+      }
+      if (!filters.oneTransfer && (item.segments[0].stops.length === 1 || item.segments[1].stops.length === 1)) {
+        return false
+      }
+      if (!filters.twoTransfers && (item.segments[0].stops.length === 2 || item.segments[1].stops.length === 2)) {
+        return false
+      }
+      if (!filters.threeTransfers && (item.segments[0].stops.length === 3 || item.segments[1].stops.length === 3)) {
+        return false
+      }
+      return true
+    })
+  }
+
   if (tabs.fastest) {
     tickets = tickets.sort((a, b) => a.segments[0].duration - b.segments[0].duration)
   } else {
@@ -91,7 +117,7 @@ const mapStateToProps = ({ tabs, server }) => {
 
     return (
       // eslint-disable-next-line react/no-array-index-key
-      <div className={styles.ticket}>
+      <div className={styles.ticket} key={item.price + item.segments[0].duration + item.segments[1].duration}>
         <div className={styles.ticket__header}>
           {`${String(item.price).slice(0, -3)} ${String(item.price).slice(-3)} Р`}
           <img
@@ -141,6 +167,7 @@ const mapStateToProps = ({ tabs, server }) => {
     fastest: tabs.fastest,
     optimal: tabs.optimal,
     tickets,
+    done: server.stop,
   }
 }
 

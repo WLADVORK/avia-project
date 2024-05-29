@@ -1,15 +1,14 @@
 /* eslint-disable indent */
 const initialState = {
   tickets: [],
+  stop: false,
 }
 
 const serverReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'TICKETS':
-      if (action.payload && !action.payload.stop) {
-        return { tickets: [...state.tickets, ...action.payload.tickets] }
-      }
-      return state
+      return { tickets: [...state.tickets, ...action.payload.tickets], stop: action.payload.stop }
+
     default:
       return state
   }
