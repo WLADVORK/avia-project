@@ -44,3 +44,5 @@ export const GET_TICKETS = (dispatch) => {
       getAgain()
     })
 }
+
+export const PAGE_INC = () => ({ type: 'PAGE_INC' })

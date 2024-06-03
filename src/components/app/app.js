@@ -15,11 +15,14 @@ export default function App() {
 
   return (
     <div className={styles.page}>
-      <img alt="aviasales-logo" src="images/logo.svg" className={styles.page__logo} />
-      <div className={styles.main}>
+      <header className={styles.page__header}>
+        <img alt="aviasales-logo" src="images/logo.svg" className={styles.page__logo} />
+      </header>
+
+      <main className={styles.main}>
         <Filters />
         <TicketList />
-      </div>
+      </main>
     </div>
   )
 }

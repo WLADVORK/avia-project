@@ -14,39 +14,46 @@ import * as actions from '../../actions'
 
 import styles from './ticket-list.module.scss'
 
-function TicketList({ cheapest, fastest, optimal, CHEAPEST, FASTEST, OPTIMAL, tickets, done }) {
+function TicketList({ cheapest, fastest, optimal, CHEAPEST, FASTEST, OPTIMAL, tickets, done, PAGE_INC, page }) {
   return (
-    <div className={styles.ticketList}>
+    <article className={styles.ticketList}>
       <div className={styles.ticketList__tabs}>
-        <div
+        <button
+          type="button"
           className={`${styles.ticketList__tab} ${cheapest ? styles['ticketList__tab--selected'] : ''}`}
           onClick={CHEAPEST}
         >
           САМЫЙ ДЕШЕВЫЙ
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           className={`${styles.ticketList__tab} ${fastest ? styles['ticketList__tab--selected'] : ''}`}
           onClick={FASTEST}
         >
           САМЫЙ БЫСТРЫЙ
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           className={`${styles.ticketList__tab} ${optimal ? styles['ticketList__tab--selected'] : ''}`}
           onClick={OPTIMAL}
         >
           ОПТИМАЛЬНЫЙ
-        </div>
+        </button>
       </div>
       {tickets.length === 0 ? (
         <div className={styles.ticketList__noData}>Рейсов, подходящих под заданные фильтры, не найдено </div>
       ) : (
         <>
-          <div className={styles.tickets}>{tickets.length !== 0 ? tickets.slice(0, 5) : <Spin size="large" />}</div>
+          <div className={styles.tickets}>
+            {tickets.length !== 0 ? tickets.slice(0, page * 5) : <Spin size="large" />}
+          </div>
           {done ? null : <Spin />}
-          <div className={styles.ticketList__showMore}>{`ПОКАЗАТЬ ЕЩЕ ${tickets.length} БИЛЕТОВ!`}</div>
+          <button type="button" className={styles.ticketList__showMore} onClick={PAGE_INC}>
+            {`ПОКАЗАТЬ ЕЩЕ ${tickets.length - page * 5} БИЛЕТОВ!`}
+          </button>
         </>
       )}
-    </div>
+    </article>
   )
 }
 
@@ -117,7 +124,7 @@ const mapStateToProps = ({ tabs, server, filters }) => {
 
     return (
       // eslint-disable-next-line react/no-array-index-key
-      <div className={styles.ticket} key={item.price + item.segments[0].duration + item.segments[1].duration}>
+      <section className={styles.ticket} key={item.price + item.segments[0].duration + item.segments[1].duration}>
         <div className={styles.ticket__header}>
           {`${String(item.price).slice(0, -3)} ${String(item.price).slice(-3)} Р`}
           <img
@@ -158,7 +165,7 @@ const mapStateToProps = ({ tabs, server, filters }) => {
             <div className={styles.ticket__value}>{stops2}</div>
           </div>
         </div>
-      </div>
+      </section>
     )
   })
 
@@ -168,15 +175,17 @@ const mapStateToProps = ({ tabs, server, filters }) => {
     optimal: tabs.optimal,
     tickets,
     done: server.stop,
+    page: server.page,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const { CHEAPEST, FASTEST, OPTIMAL } = bindActionCreators(actions, dispatch)
+  const { CHEAPEST, FASTEST, OPTIMAL, PAGE_INC } = bindActionCreators(actions, dispatch)
   return {
     CHEAPEST,
     FASTEST,
     OPTIMAL,
+    PAGE_INC,
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TicketList)

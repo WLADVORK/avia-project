@@ -20,7 +20,7 @@ function Filters({
   THREE_TRANSFERS,
 }) {
   return (
-    <div className={styles.filters}>
+    <aside className={styles.filters}>
       <span className={styles.filters__heading}>КОЛИЧЕСТВО ПЕРЕСАДОК</span>
       <form className={styles.filters__form}>
         <label className={styles.filters__label}>
@@ -64,7 +64,7 @@ function Filters({
           3 пересадки
         </label>
       </form>
-    </div>
+    </aside>
   )
 }
 
